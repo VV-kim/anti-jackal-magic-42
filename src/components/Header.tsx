@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const Header = () => {
@@ -29,7 +28,7 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="h-10 w-10 relative">
+          <div className="h-12 w-12 relative">
             <img 
               src="/lovable-uploads/e9d475c9-91bf-4926-a570-a8c3c93fae65.png" 
               alt="Anti-Jackal Logo" 

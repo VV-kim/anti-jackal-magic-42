@@ -1,12 +1,10 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
-import { Slider } from '@/components/ui/slider';
 
 const HeroSection = () => {
   const pixelRef = useRef<HTMLDivElement>(null);
-  const [sliderValue, setSliderValue] = useState(50);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -61,52 +59,34 @@ const HeroSection = () => {
         
         {/* Image showcase with before/after effect */}
         <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden glass-card animate-fade-in" style={{ animationDelay: "0.4s" }}>
-          {/* Before image (low quality) - Full width */}
-          <div className="absolute inset-0">
-            <img 
-              src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
-              alt="Изображение до улучшения" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* After image (high quality) with clip-path overlay */}
-          <div 
-            className="absolute inset-0"
-            style={{ 
-              clipPath: `inset(0 ${100 - sliderValue}% 0 0)` 
-            }}
-          >
-            <img 
-              src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
-              alt="Изображение после улучшения" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* Vertical divider line */}
-          <div 
-            className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-            style={{ left: `${sliderValue}%` }}
-          ></div>
-          
-          {/* Custom slider control */}
-          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-4/5 max-w-md">
-            <Slider
-              value={[sliderValue]}
-              onValueChange={(values) => setSliderValue(values[0])}
-              max={100}
-              step={1}
-              className="z-20"
-            />
-          </div>
-          
-          {/* Labels */}
-          <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md">
-            <span className="text-sm font-medium">До</span>
-          </div>
-          <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md">
-            <span className="text-sm font-medium">После</span>
+          {/* Container with split view */}
+          <div className="flex h-full">
+            {/* Before image (low quality) */}
+            <div className="w-1/2 h-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
+                alt="Изображение до улучшения" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+                <span className="text-sm font-medium">До</span>
+              </div>
+            </div>
+            
+            {/* After image (high quality) */}
+            <div className="w-1/2 h-full relative">
+              <img 
+                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
+                alt="Изображение после улучшения" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
+                <span className="text-sm font-medium">После</span>
+              </div>
+            </div>
+            
+            {/* Vertical divider line */}
+            <div className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
           </div>
         </div>
         

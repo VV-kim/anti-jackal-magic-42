@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import { Slider } from "@/components/ui/slider";
 
 // Example data
 const photoExamples = [
@@ -57,7 +56,6 @@ const videoExamples = [
 
 const ExamplesSection = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [sliderValue, setSliderValue] = useState(50);
   
   const nextPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev === photoExamples.length - 1 ? 0 : prev + 1));
@@ -108,55 +106,36 @@ const ExamplesSection = () => {
                 </p>
               </div>
               
-              {/* Before/After Slider */}
+              {/* Static Before/After Split View */}
               <div className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card">
-                {/* Before Image - Always full width and static */}
-                <div className="absolute inset-0">
-                  <img 
-                    src={photoExamples[currentPhotoIndex].before} 
-                    alt="До" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                {/* After Image with slider - Also full width but with clip-path */}
-                <div 
-                  className="absolute inset-0"
-                  style={{ 
-                    clipPath: `inset(0 ${100 - sliderValue}% 0 0)` 
-                  }}
-                >
-                  <img 
-                    src={photoExamples[currentPhotoIndex].after} 
-                    alt="После" 
-                    className="w-full h-full object-cover"
-                  />
+                <div className="flex h-full">
+                  {/* Before Image - Left half */}
+                  <div className="w-1/2 h-full relative">
+                    <img 
+                      src={photoExamples[currentPhotoIndex].before} 
+                      alt="До" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+                      <span className="text-sm font-medium">До</span>
+                    </div>
+                  </div>
+                  
+                  {/* After Image - Right half */}
+                  <div className="w-1/2 h-full relative">
+                    <img 
+                      src={photoExamples[currentPhotoIndex].after} 
+                      alt="После" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
+                      <span className="text-sm font-medium">После</span>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Vertical divider line */}
-                <div 
-                  className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                  style={{ left: `${sliderValue}%` }}
-                ></div>
-                
-                {/* Custom slider control */}
-                <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-4/5 max-w-md">
-                  <Slider
-                    value={[sliderValue]}
-                    onValueChange={(values) => setSliderValue(values[0])}
-                    max={100}
-                    step={1}
-                    className="z-20"
-                  />
-                </div>
-                
-                {/* Labels */}
-                <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
-                  <span className="text-sm font-medium">До</span>
-                </div>
-                <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
-                  <span className="text-sm font-medium">После</span>
-                </div>
+                <div className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
               </div>
               
               {/* Navigation Controls */}

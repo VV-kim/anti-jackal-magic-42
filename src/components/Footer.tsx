@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Telegram, Vk } from 'lucide-react';
+import { MessageCircle, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 relative">
+              <div className="h-12 w-12 relative">
                 <img 
                   src="/lovable-uploads/e9d475c9-91bf-4926-a570-a8c3c93fae65.png" 
                   alt="Anti-Jackal Logo" 
@@ -56,10 +56,10 @@ const Footer = () => {
             </div>
             <div className="flex gap-4 mt-6">
               <a href="#" className="text-ajackal-white/70 hover:text-ajackal-white transition-colors">
-                <Telegram size={20} />
+                <MessageCircle size={20} />
               </a>
               <a href="#" className="text-ajackal-white/70 hover:text-ajackal-white transition-colors">
-                <Vk size={20} />
+                <Mail size={20} />
               </a>
             </div>
           </div>
