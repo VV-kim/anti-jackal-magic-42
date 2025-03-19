@@ -37,27 +37,27 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 pt-16 md:pt-24 flex flex-col items-center">
         {/* Animated badge */}
         <div className="glass-morph px-4 py-1 rounded-full mb-6 animate-fade-in">
-          <span className="text-sm font-medium text-ajackal-white/90">Future Technology</span>
+          <span className="text-sm font-medium text-ajackal-white/90">Технология будущего</span>
         </div>
         
         {/* Main heading */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-6 max-w-3xl animate-fade-in" style={{ animationDelay: "0.1s" }}>
-          <span className="ajackal-gradient-text">Anti-Jackal:</span> Your content at a new level!
+          <span className="ajackal-gradient-text">Anti-Jackal:</span> Ваш контент на новом уровне!
         </h1>
         
         {/* Subtitle */}
         <p className="text-lg md:text-xl text-center text-ajackal-white/80 max-w-2xl mb-10 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          Revolutionary neural network technology for automated improvement of photo and video quality
+          Революционная технология на базе нейросетей для автоматизированного улучшения качества фотографий и видео
         </p>
         
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in" style={{ animationDelay: "0.3s" }}>
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient text-white px-8 py-6 rounded-xl text-lg">
-            Try for free
+            Попробовать бесплатно
           </Button>
           <Button variant="outline" className="border-ajackal-purple/40 hover:bg-ajackal-purple/10 text-white px-8 py-6 rounded-xl text-lg flex items-center gap-2">
             <Play size={18} className="fill-ajackal-white" />
-            Watch video
+            Смотреть видео
           </Button>
         </div>
         
@@ -67,7 +67,7 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-ajackal-purple/5 to-ajackal-pink/5">
             <img 
               src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
-              alt="Image before enhancement" 
+              alt="Изображение до улучшения" 
               className="w-full h-full object-cover mix-blend-luminosity opacity-80"
             />
           </div>
@@ -78,7 +78,7 @@ const HeroSection = () => {
               <div className="h-full w-[200%] flex items-stretch">
                 <img 
                   src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
-                  alt="Image after enhancement" 
+                  alt="Изображение после улучшения" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -92,10 +92,10 @@ const HeroSection = () => {
           
           {/* Labels */}
           <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md">
-            <span className="text-sm font-medium">Before</span>
+            <span className="text-sm font-medium">До</span>
           </div>
           <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md">
-            <span className="text-sm font-medium">After</span>
+            <span className="text-sm font-medium">После</span>
           </div>
         </div>
         
@@ -105,7 +105,7 @@ const HeroSection = () => {
           className="flex flex-col items-center gap-2 absolute bottom-8 left-1/2 transform -translate-x-1/2 text-ajackal-white/60 hover:text-ajackal-white transition-colors animate-fade-in cursor-pointer"
           style={{ animationDelay: "0.6s" }}
         >
-          <span className="text-sm">Learn more</span>
+          <span className="text-sm">Узнать больше</span>
           <ChevronDown size={20} className="animate-bounce" />
         </a>
       </div>

@@ -12,33 +12,33 @@ import {
 const features = [
   {
     icon: <ImageIcon className="h-8 w-8 text-ajackal-purple" />,
-    title: 'Noise Removal',
-    description: 'Intelligent removal of noise and artifacts from photos and videos without loss of quality and details.'
+    title: 'Удаление шумов',
+    description: 'Интеллектуальное удаление шумов и артефактов с фотографий и видео без потери качества и деталей.'
   },
   {
     icon: <Upload className="h-8 w-8 text-ajackal-purple" />,
-    title: 'Resolution Enhancement',
-    description: 'Increase the resolution of images and videos to 4K while preserving all details and improving clarity.'
+    title: 'Повышение разрешения',
+    description: 'Увеличение разрешения изображений и видео до 4K с сохранением всех деталей и улучшением четкости.'
   },
   {
     icon: <Zap className="h-8 w-8 text-ajackal-purple" />,
-    title: 'High Speed',
-    description: 'Instant processing thanks to optimized algorithms and the use of cloud computing.'
+    title: 'Высокая скорость',
+    description: 'Мгновенная обработка благодаря оптимизированным алгоритмам и использованию облачных вычислений.'
   },
   {
     icon: <BarChart3 className="h-8 w-8 text-ajackal-purple" />,
-    title: 'Quality Analytics',
-    description: 'Detailed analysis of source and enhanced material with visualization of changes and improvement metrics.'
+    title: 'Аналитика качества',
+    description: 'Подробный анализ исходного и улучшенного материала с визуализацией изменений и метриками улучшения.'
   },
   {
     icon: <MonitorSmartphone className="h-8 w-8 text-ajackal-purple" />,
-    title: 'Cross-platform',
-    description: 'Works on any device: from smartphones to professional workstations.'
+    title: 'Кросс-платформенность',
+    description: 'Работает на любых устройствах: от смартфонов до профессиональных рабочих станций.'
   },
   {
     icon: <Shield className="h-8 w-8 text-ajackal-purple" />,
-    title: 'Data Security',
-    description: 'Complete confidentiality of all uploaded materials and automatic deletion after processing.'
+    title: 'Безопасность данных',
+    description: 'Полная конфиденциальность всех загружаемых материалов и автоматическое удаление после обработки.'
   }
 ];
 
@@ -52,13 +52,13 @@ const FeaturesSection = () => {
         {/* Section header */}
         <div className="text-center mb-16">
           <div className="inline-block glass-morph px-4 py-1 rounded-full mb-4">
-            <span className="text-sm font-medium text-ajackal-white/90">Unique capabilities</span>
+            <span className="text-sm font-medium text-ajackal-white/90">Уникальные возможности</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Advantages of <span className="ajackal-gradient-text">Anti-Jackal</span>
+            Преимущества <span className="ajackal-gradient-text">Anti-Jackal</span>
           </h2>
           <p className="text-ajackal-white/80 max-w-2xl mx-auto">
-            Our technology is based on the latest advances in deep learning and generative adversarial networks (GANs)
+            Наша технология основана на последних достижениях в области глубокого обучения и генеративных состязательных нейросетей (GANs)
           </p>
         </div>
         
@@ -83,10 +83,10 @@ const FeaturesSection = () => {
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
               <h3 className="text-2xl md:text-3xl font-bold mb-6">
-                <span className="ajackal-gradient-text">GANs</span> Technology
+                Технология <span className="ajackal-gradient-text">GANs</span>
               </h3>
               <p className="text-ajackal-white/80 mb-6">
-                Anti-Jackal uses advanced generative adversarial networks (GANs) to analyze and enhance visual content. This revolutionary technology allows:
+                Anti-Jackal использует продвинутые генеративные состязательные нейросети (GANs) для анализа и улучшения визуального контента. Эта революционная технология позволяет:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
@@ -95,7 +95,7 @@ const FeaturesSection = () => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-ajackal-white/80">Restore details that were lost during compression</span>
+                  <span className="text-ajackal-white/80">Восстанавливать детали, которые были утеряны при сжатии</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="h-6 w-6 rounded-full bg-ajackal-gradient flex items-center justify-center mt-0.5 flex-shrink-0">
@@ -103,7 +103,7 @@ const FeaturesSection = () => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-ajackal-white/80">Significantly increase image clarity without distortion</span>
+                  <span className="text-ajackal-white/80">Значительно повышать четкость изображений без искажений</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="h-6 w-6 rounded-full bg-ajackal-gradient flex items-center justify-center mt-0.5 flex-shrink-0">
@@ -111,7 +111,7 @@ const FeaturesSection = () => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-ajackal-white/80">Intelligently restore textures and fine details</span>
+                  <span className="text-ajackal-white/80">Интеллектуально восстанавливать текстуры и мелкие детали</span>
                 </li>
               </ul>
             </div>
@@ -119,13 +119,13 @@ const FeaturesSection = () => {
               <div className="rounded-lg overflow-hidden relative z-10">
                 <img 
                   src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1365&q=80" 
-                  alt="Neural Network Visualization" 
+                  alt="Визуализация нейросети" 
                   className="w-full h-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ajackal-black/80 to-transparent"></div>
                 <div className="absolute bottom-4 left-0 right-0 text-center">
                   <span className="glass-morph px-4 py-2 rounded-full inline-block text-sm font-medium">
-                    Neural network visualization
+                    Визуализация работы нейросети
                   </span>
                 </div>
               </div>

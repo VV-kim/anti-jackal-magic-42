@@ -12,7 +12,7 @@ const Footer = () => {
               <div className="h-8 w-8 relative">
                 <div className="absolute inset-0 bg-ajackal-gradient rounded-lg opacity-80"></div>
                 <img 
-                  src="/placeholder.svg" 
+                  src="/lovable-uploads/e9d475c9-91bf-4926-a570-a8c3c93fae65.png" 
                   alt="Anti-Jackal Logo" 
                   className="h-full w-full object-contain relative z-10"
                 />
@@ -20,38 +20,38 @@ const Footer = () => {
               <span className="font-bold text-lg ajackal-gradient-text">Anti-Jackal</span>
             </div>
             <p className="mt-4 text-sm text-ajackal-white/70">
-              Revolutionary technology based on generative adversarial neural networks to improve the quality of visual content.
+              Революционная технология на базе генеративных состязательных нейросетей для улучшения качества визуального контента.
             </p>
           </div>
           
           <div className="flex flex-col">
-            <h3 className="font-medium text-lg mb-4">Links</h3>
+            <h3 className="font-medium text-lg mb-4">Ссылки</h3>
             <div className="flex flex-col gap-2">
               <a href="#features" className="text-ajackal-white/70 hover:text-ajackal-white transition-colors text-sm">
-                Features
+                Преимущества
               </a>
               <a href="#examples" className="text-ajackal-white/70 hover:text-ajackal-white transition-colors text-sm">
-                Examples
+                Примеры
               </a>
               <a href="#try" className="text-ajackal-white/70 hover:text-ajackal-white transition-colors text-sm">
-                Try it
+                Попробовать
               </a>
               <a href="#contact" className="text-ajackal-white/70 hover:text-ajackal-white transition-colors text-sm">
-                Contact
+                Контакты
               </a>
             </div>
           </div>
           
           <div className="flex flex-col">
-            <h3 className="font-medium text-lg mb-4">Subscribe to updates</h3>
+            <h3 className="font-medium text-lg mb-4">Подписаться на обновления</h3>
             <div className="flex gap-2">
               <input 
                 type="email" 
-                placeholder="Your email" 
+                placeholder="Ваш email" 
                 className="flex-1 px-4 py-2 bg-ajackal-off-black border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-ajackal-purple"
               />
               <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient">
-                Submit
+                Отправить
               </Button>
             </div>
             <div className="flex gap-4 mt-6">
@@ -76,14 +76,14 @@ const Footer = () => {
         
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-ajackal-white/50">
-            © 2023 Anti-Jackal. All rights reserved.
+            © 2023 Anti-Jackal. Все права защищены.
           </p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <a href="#" className="text-sm text-ajackal-white/50 hover:text-ajackal-white transition-colors">
-              Privacy Policy
+              Политика конфиденциальности
             </a>
             <a href="#" className="text-sm text-ajackal-white/50 hover:text-ajackal-white transition-colors">
-              Terms of Use
+              Условия использования
             </a>
           </div>
         </div>

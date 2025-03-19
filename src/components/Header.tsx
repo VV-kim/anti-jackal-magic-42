@@ -32,7 +32,7 @@ const Header = () => {
           <div className="h-10 w-10 relative">
             <div className="absolute inset-0 bg-ajackal-gradient rounded-lg opacity-80 animate-pulse-glow"></div>
             <img 
-              src="/placeholder.svg" 
+              src="/lovable-uploads/e9d475c9-91bf-4926-a570-a8c3c93fae65.png" 
               alt="Anti-Jackal Logo" 
               className="h-full w-full object-contain relative z-10"
             />
@@ -43,19 +43,19 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
-            Features
+            Преимущества
           </a>
           <a href="#examples" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
-            Examples
+            Примеры
           </a>
           <a href="#try" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
-            Try it
+            Попробовать
           </a>
           <a href="#contact" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
-            Contact
+            Контакты
           </a>
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300">
-            Try for free
+            Попробовать бесплатно
           </Button>
         </nav>
         
@@ -77,31 +77,31 @@ const Header = () => {
               className="py-2 text-ajackal-white/90 hover:text-ajackal-white transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Features
+              Преимущества
             </a>
             <a 
               href="#examples" 
               className="py-2 text-ajackal-white/90 hover:text-ajackal-white transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Examples
+              Примеры
             </a>
             <a 
               href="#try" 
               className="py-2 text-ajackal-white/90 hover:text-ajackal-white transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Try it
+              Попробовать
             </a>
             <a 
               href="#contact" 
               className="py-2 text-ajackal-white/90 hover:text-ajackal-white transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Contact
+              Контакты
             </a>
             <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300 w-full mt-2">
-              Try for free
+              Попробовать бесплатно
             </Button>
           </div>
         </div>
