@@ -1,5 +1,4 @@
-
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ImageIcon, 
@@ -7,6 +6,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { Slider } from "@/components/ui/slider";
 
 // Example data
 const photoExamples = [
@@ -57,8 +57,6 @@ const videoExamples = [
 const ExamplesSection = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [sliderValue, setSliderValue] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-  const sliderRef = useRef<HTMLDivElement>(null);
   
   const nextPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev === photoExamples.length - 1 ? 0 : prev + 1));
@@ -67,57 +65,6 @@ const ExamplesSection = () => {
   const prevPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev === 0 ? photoExamples.length - 1 : prev - 1));
   };
-  
-  // Улучшенное управление слайдером
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDragging(true);
-    updateSliderPosition(e.clientX);
-  };
-  
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    setIsDragging(true);
-    updateSliderPosition(e.touches[0].clientX);
-  };
-  
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      updateSliderPosition(e.clientX);
-    }
-  };
-  
-  const handleTouchMove = (e: TouchEvent) => {
-    if (isDragging) {
-      updateSliderPosition(e.touches[0].clientX);
-    }
-  };
-  
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  };
-  
-  const updateSliderPosition = (clientX: number) => {
-    if (!sliderRef.current) return;
-    
-    const sliderRect = sliderRef.current.getBoundingClientRect();
-    const offsetX = clientX - sliderRect.left;
-    const percentage = Math.min(Math.max((offsetX / sliderRect.width) * 100, 1), 99);
-    
-    setSliderValue(percentage);
-  };
-  
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleDragEnd);
-    window.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('touchend', handleDragEnd);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleDragEnd);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleDragEnd);
-    };
-  }, [isDragging]);
   
   return (
     <section id="examples" className="py-20 bg-ajackal-off-black">
@@ -135,7 +82,6 @@ const ExamplesSection = () => {
           </p>
         </div>
         
-        {/* Tabs for Photos and Videos */}
         <Tabs defaultValue="photos" className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-10">
             <TabsTrigger value="photos" className="flex items-center gap-2">
@@ -161,73 +107,51 @@ const ExamplesSection = () => {
                 </p>
               </div>
               
-              {/* Improved Before-After Slider */}
+              {/* Before/After Slider */}
               <div 
-                ref={sliderRef}
-                className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card touch-none select-none"
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
+                className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card"
               >
-                {/* Before Image (Full) */}
+                {/* Before Image */}
                 <div className="absolute inset-0">
                   <img 
                     src={photoExamples[currentPhotoIndex].before} 
                     alt="До" 
                     className="w-full h-full object-cover"
-                    draggable="false"
                   />
                 </div>
                 
-                {/* After Image (Partial) with improved slider */}
+                {/* After Image with slider */}
                 <div 
-                  className="absolute inset-0 overflow-hidden transition-[width] duration-100" 
+                  className="absolute inset-0 overflow-hidden"
                   style={{ width: `${sliderValue}%` }}
                 >
                   <img 
                     src={photoExamples[currentPhotoIndex].after} 
                     alt="После" 
                     className="w-full h-full object-cover"
-                    style={{ minWidth: `${100 / (sliderValue / 100)}%` }}
-                    draggable="false"
                   />
                   
                   {/* Vertical divider line */}
                   <div className="absolute top-0 right-0 w-0.5 h-full bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
                 </div>
                 
-                {/* Slider Control - Improved grabber */}
-                <div 
-                  className="absolute top-0 bottom-0 w-px bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] z-10 cursor-grab active:cursor-grabbing"
-                  style={{ left: `${sliderValue}%` }}
-                >
-                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-ajackal-gradient rounded-full shadow-[0_0_15px_rgba(155,48,255,0.7)] flex items-center justify-center">
-                    <div className="flex items-center justify-center gap-0.5 rotate-90">
-                      <div className="w-1 h-5 bg-white rounded-full"></div>
-                      <div className="w-1 h-5 bg-white rounded-full"></div>
-                    </div>
-                  </div>
+                {/* Custom slider control */}
+                <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-4/5 max-w-md">
+                  <Slider
+                    value={[sliderValue]}
+                    onValueChange={(values) => setSliderValue(values[0])}
+                    max={100}
+                    step={1}
+                    className="z-20"
+                  />
                 </div>
                 
-                {/* Before/After Labels with improved visibility */}
-                <div className="absolute bottom-4 left-4 glass-morph px-4 py-1.5 rounded-md z-10 shadow-lg">
+                {/* Labels */}
+                <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
                   <span className="text-sm font-medium">До</span>
                 </div>
-                <div className="absolute bottom-4 right-4 glass-morph px-4 py-1.5 rounded-md z-10 shadow-lg">
+                <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
                   <span className="text-sm font-medium">После</span>
-                </div>
-                
-                {/* Interactive instructions overlay - shown initially */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="glass-morph px-6 py-3 rounded-full bg-ajackal-black/40 backdrop-blur-md text-white/90 animate-pulse-glow">
-                    <p className="text-sm font-medium flex items-center gap-2">
-                      <span>Двигайте ползунок</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M6 14a5 5 0 0 1 5-5c2.5-2.5 5-2 7 0a5 5 0 0 1 5 5v2a6 6 0 0 1-6 6h-2a5 5 0 0 1-5-5z"/>
-                        <path d="M5 18a7 7 0 0 1 7-7c2.5-2.5 6-2.5 8.5 0a7 7 0 0 1 0 10z"/>
-                        <circle cx="10" cy="9" r="1"/>
-                      </svg>
-                    </p>
-                  </div>
                 </div>
               </div>
               

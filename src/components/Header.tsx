@@ -29,7 +29,7 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="h-10 w-10 relative">
+          <div className="h-10 w-10 relative bg-ajackal-black rounded-lg">
             <div className="absolute inset-0 bg-ajackal-gradient rounded-lg opacity-80 animate-pulse-glow"></div>
             <img 
               src="/lovable-uploads/e9d475c9-91bf-4926-a570-a8c3c93fae65.png" 

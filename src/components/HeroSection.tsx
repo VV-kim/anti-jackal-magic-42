@@ -1,10 +1,12 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Play } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
 
 const HeroSection = () => {
   const pixelRef = useRef<HTMLDivElement>(null);
+  const [sliderValue, setSliderValue] = useState(50);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -55,39 +57,45 @@ const HeroSection = () => {
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient text-white px-8 py-6 rounded-xl text-lg">
             Попробовать бесплатно
           </Button>
-          <Button variant="outline" className="border-ajackal-purple/40 hover:bg-ajackal-purple/10 text-white px-8 py-6 rounded-xl text-lg flex items-center gap-2">
-            <Play size={18} className="fill-ajackal-white" />
-            Смотреть видео
-          </Button>
         </div>
         
         {/* Image showcase with before/after effect */}
         <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden glass-card animate-fade-in" style={{ animationDelay: "0.4s" }}>
-          {/* Before image (low quality) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ajackal-purple/5 to-ajackal-pink/5">
-            <img 
-              src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
-              alt="Изображение до улучшения" 
-              className="w-full h-full object-cover mix-blend-luminosity opacity-80"
-            />
+          <div className="absolute inset-0 flex items-stretch">
+            {/* Before image (low quality) */}
+            <div className="w-full h-full">
+              <img 
+                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
+                alt="Изображение до улучшения" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            {/* After image (high quality) with slider overlay */}
+            <div 
+              className="absolute inset-0 overflow-hidden"
+              style={{ width: `${sliderValue}%` }}
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
+                alt="Изображение после улучшения" 
+                className="w-full h-full object-cover"
+              />
+              
+              {/* Vertical divider line */}
+              <div className="absolute top-0 right-0 w-0.5 h-full bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
+            </div>
           </div>
           
-          {/* After image (high quality) with animation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent backdrop-blur-xs">
-            <div className="absolute inset-0 w-1/2 overflow-hidden transition-all duration-300 hover:w-[95%]">
-              <div className="h-full w-[200%] flex items-stretch">
-                <img 
-                  src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
-                  alt="Изображение после улучшения" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute top-0 right-0 bottom-0 border-r-2 border-white shadow-xl flex items-center justify-center">
-                <div className="h-10 w-10 rounded-full bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-black text-xs font-bold">HD</span>
-                </div>
-              </div>
-            </div>
+          {/* Custom slider control */}
+          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-4/5 max-w-md">
+            <Slider
+              value={[sliderValue]}
+              onValueChange={(values) => setSliderValue(values[0])}
+              max={100}
+              step={1}
+              className="z-20"
+            />
           </div>
           
           {/* Labels */}
