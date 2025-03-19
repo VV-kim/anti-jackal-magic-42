@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -108,10 +109,8 @@ const ExamplesSection = () => {
               </div>
               
               {/* Before/After Slider */}
-              <div 
-                className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card"
-              >
-                {/* Before Image */}
+              <div className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card">
+                {/* Before Image - Always full width and static */}
                 <div className="absolute inset-0">
                   <img 
                     src={photoExamples[currentPhotoIndex].before} 
@@ -120,20 +119,25 @@ const ExamplesSection = () => {
                   />
                 </div>
                 
-                {/* After Image with slider */}
+                {/* After Image with slider - Also full width but with clip-path */}
                 <div 
-                  className="absolute inset-0 overflow-hidden"
-                  style={{ width: `${sliderValue}%` }}
+                  className="absolute inset-0"
+                  style={{ 
+                    clipPath: `inset(0 ${100 - sliderValue}% 0 0)` 
+                  }}
                 >
                   <img 
                     src={photoExamples[currentPhotoIndex].after} 
                     alt="После" 
                     className="w-full h-full object-cover"
                   />
-                  
-                  {/* Vertical divider line */}
-                  <div className="absolute top-0 right-0 w-0.5 h-full bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
                 </div>
+                
+                {/* Vertical divider line */}
+                <div 
+                  className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                  style={{ left: `${sliderValue}%` }}
+                ></div>
                 
                 {/* Custom slider control */}
                 <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-4/5 max-w-md">
@@ -199,7 +203,7 @@ const ExamplesSection = () => {
                     <img 
                       src={video.thumbnail} 
                       alt={video.title} 
-                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-48 object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-ajackal-black to-transparent opacity-60"></div>
                     <div className="absolute inset-0 flex items-center justify-center">

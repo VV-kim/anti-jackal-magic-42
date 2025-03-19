@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   Send, 
-  MapPin, 
   Phone, 
   Mail,
   CheckCircle
@@ -128,18 +127,6 @@ const ContactSection = () => {
             <div className="glass-card p-6 md:p-8 rounded-xl mb-8">
               <h3 className="text-2xl font-semibold mb-6">Контактная информация</h3>
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 h-10 w-10 rounded-full bg-ajackal-gradient flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-medium mb-1">Адрес</h4>
-                    <p className="text-ajackal-white/70">
-                      Москва, Инновационный Центр Сколково,<br />
-                      Большой бульвар, 42с1
-                    </p>
-                  </div>
-                </div>
                 <div className="flex items-start gap-4">
                   <div className="mt-1 h-10 w-10 rounded-full bg-ajackal-gradient flex items-center justify-center flex-shrink-0">
                     <Phone className="h-5 w-5 text-white" />

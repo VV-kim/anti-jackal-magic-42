@@ -55,37 +55,40 @@ const HeroSection = () => {
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-in" style={{ animationDelay: "0.3s" }}>
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient text-white px-8 py-6 rounded-xl text-lg">
-            Попробовать бесплатно
+            <a href="#try">Попробовать бесплатно</a>
           </Button>
         </div>
         
         {/* Image showcase with before/after effect */}
         <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden glass-card animate-fade-in" style={{ animationDelay: "0.4s" }}>
-          <div className="absolute inset-0 flex items-stretch">
-            {/* Before image (low quality) */}
-            <div className="w-full h-full">
-              <img 
-                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
-                alt="Изображение до улучшения" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            
-            {/* After image (high quality) with slider overlay */}
-            <div 
-              className="absolute inset-0 overflow-hidden"
-              style={{ width: `${sliderValue}%` }}
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
-                alt="Изображение после улучшения" 
-                className="w-full h-full object-cover"
-              />
-              
-              {/* Vertical divider line */}
-              <div className="absolute top-0 right-0 w-0.5 h-full bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
-            </div>
+          {/* Before image (low quality) - Full width */}
+          <div className="absolute inset-0">
+            <img 
+              src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
+              alt="Изображение до улучшения" 
+              className="w-full h-full object-cover"
+            />
           </div>
+          
+          {/* After image (high quality) with clip-path overlay */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              clipPath: `inset(0 ${100 - sliderValue}% 0 0)` 
+            }}
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
+              alt="Изображение после улучшения" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          
+          {/* Vertical divider line */}
+          <div 
+            className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+            style={{ left: `${sliderValue}%` }}
+          ></div>
           
           {/* Custom slider control */}
           <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-4/5 max-w-md">
