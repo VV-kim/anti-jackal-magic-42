@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageIcon, Film, Play } from 'lucide-react';
@@ -80,13 +81,16 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, alt }: BeforeAfterSliderPr
         <img 
           src={afterImage} 
           alt={`${alt} - после обработки`} 
-          className="w-full h-full object-cover"
+          className="absolute top-0 left-0 h-full object-cover"
+          style={{ 
+            width: `${100 / (sliderPosition / 100)}%`,
+            maxWidth: `${100 / (sliderPosition / 100)}%`,
+            objectPosition: "0% 0%"
+          }}
         />
-      </div>
-      
-      {/* После (After) label - static on the right */}
-      <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
-        <span className="text-sm font-medium">После</span>
+        <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+          <span className="text-sm font-medium">После</span>
+        </div>
       </div>
       
       {/* Slider handle */}
