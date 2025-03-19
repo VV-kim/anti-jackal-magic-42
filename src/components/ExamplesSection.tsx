@@ -1,8 +1,110 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { ImageIcon, Film, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ImageIcon, Film, Play } from 'lucide-react';
+
+// BeforeAfterSlider component
+interface BeforeAfterSliderProps {
+  beforeImage: string;
+  afterImage: string;
+  alt: string;
+}
+
+const BeforeAfterSlider = ({ beforeImage, afterImage, alt }: BeforeAfterSliderProps) => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const handleMouseDown = () => {
+    setIsDragging(true);
+  };
+  
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+  
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    
+    setSliderPosition(percentage);
+  };
+  
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    
+    const touch = e.touches[0];
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(touch.clientX - rect.left, rect.width));
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    
+    setSliderPosition(percentage);
+  };
+  
+  useEffect(() => {
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+  
+  return (
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full cursor-ew-resize rounded-xl overflow-hidden shadow-xl"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onTouchMove={handleTouchMove}
+      onTouchStart={handleMouseDown}
+      onTouchEnd={handleMouseUp}
+    >
+      {/* Before image (full width) */}
+      <div className="absolute inset-0">
+        <img 
+          src={beforeImage} 
+          alt={`${alt} - до обработки`} 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+          <span className="text-sm font-medium">До</span>
+        </div>
+      </div>
+      
+      {/* After image (clipped) */}
+      <div 
+        className="absolute inset-0 overflow-hidden"
+        style={{ width: `${sliderPosition}%` }}
+      >
+        <img 
+          src={afterImage} 
+          alt={`${alt} - после обработки`} 
+          className="absolute top-0 left-0 h-full object-cover"
+          style={{ 
+            width: `${100 / (sliderPosition / 100)}%`,
+            maxWidth: `${100 / (sliderPosition / 100)}%`,
+            objectPosition: "0% 0%"
+          }}
+        />
+        <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+          <span className="text-sm font-medium">После</span>
+        </div>
+      </div>
+      
+      {/* Slider handle */}
+      <div 
+        className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20"
+        style={{ left: `${sliderPosition}%` }}
+      >
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-white shadow-lg flex items-center justify-center">
+          <div className="h-2 w-2 rounded-full bg-ajackal-black"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Example data
 const photoExamples = [
@@ -52,7 +154,8 @@ const videoExamples = [
 
 const ExamplesSection = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [sliderValue, setSliderValue] = useState([50]);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   
   const nextPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev === photoExamples.length - 1 ? 0 : prev + 1));
@@ -62,18 +165,48 @@ const ExamplesSection = () => {
     setCurrentPhotoIndex((prev) => (prev === 0 ? photoExamples.length - 1 : prev - 1));
   };
   
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+  
   return (
-    <section id="examples" className="py-20 bg-ajackal-off-black">
+    <section 
+      id="examples" 
+      ref={sectionRef}
+      className="py-20 bg-ajackal-off-black"
+    >
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-16">
           <div className="inline-block glass-morph px-4 py-1 rounded-full mb-4">
             <span className="text-sm font-medium text-ajackal-white/90">Наглядная демонстрация</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-700 ${
+            isVisible ? "opacity-100" : "opacity-0 translate-y-8"
+          }`}>
             Примеры <span className="ajackal-gradient-text">до и после</span>
           </h2>
-          <p className="text-ajackal-white/80 max-w-2xl mx-auto">
+          <p className={`text-ajackal-white/80 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
+            isVisible ? "opacity-100" : "opacity-0 translate-y-8"
+          }`}>
             Оцените потрясающую разницу в качестве фотографий и видео после обработки при помощи нашей технологии
           </p>
         </div>
@@ -105,64 +238,11 @@ const ExamplesSection = () => {
               
               {/* Interactive Before/After Slider */}
               <div className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card">
-                {/* Container for both images */}
-                <div className="relative h-full w-full">
-                  {/* "After" image (background, full width) */}
-                  <div className="absolute inset-0 w-full h-full">
-                    <img 
-                      src={photoExamples[currentPhotoIndex].after} 
-                      alt="После" 
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
-                      <span className="text-sm font-medium">После</span>
-                    </div>
-                  </div>
-                  
-                  {/* "Before" image (foreground, clipped) */}
-                  <div 
-                    className="absolute inset-0 h-full overflow-hidden" 
-                    style={{ 
-                      width: `${sliderValue[0]}%`,
-                      clipPath: `inset(0 0 0 0)`,
-                    }}
-                  >
-                    <img 
-                      src={photoExamples[currentPhotoIndex].before} 
-                      alt="До" 
-                      className="absolute top-0 left-0 h-full w-full object-cover"
-                      style={{ 
-                        width: `${100 / (sliderValue[0]/100)}%`,
-                        maxWidth: `${100 * (100/sliderValue[0])}%`,
-                        minWidth: '100%'
-                      }}
-                    />
-                    <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
-                      <span className="text-sm font-medium">До</span>
-                    </div>
-                  </div>
-                  
-                  {/* Slider divider line */}
-                  <div 
-                    className="absolute top-0 bottom-0 w-0.5 bg-white/90 z-20 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                    style={{ left: `${sliderValue[0]}%` }}
-                  >
-                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-8 w-8 rounded-full bg-white shadow-lg flex items-center justify-center">
-                      <div className="h-2 w-2 rounded-full bg-ajackal-black"></div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Range slider at the bottom */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                  <Slider
-                    value={sliderValue}
-                    onValueChange={setSliderValue}
-                    max={100}
-                    step={1}
-                    className="w-full"
-                  />
-                </div>
+                <BeforeAfterSlider 
+                  beforeImage={photoExamples[currentPhotoIndex].before}
+                  afterImage={photoExamples[currentPhotoIndex].after}
+                  alt={photoExamples[currentPhotoIndex].title}
+                />
               </div>
               
               {/* Navigation Controls */}
@@ -171,7 +251,9 @@ const ExamplesSection = () => {
                   onClick={prevPhoto}
                   className="h-10 w-10 rounded-full glass-morph flex items-center justify-center hover:bg-ajackal-purple/30 transition-colors"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
                 <div className="flex gap-2">
                   {photoExamples.map((_, index) => (
@@ -191,7 +273,9 @@ const ExamplesSection = () => {
                   onClick={nextPhoto}
                   className="h-10 w-10 rounded-full glass-morph flex items-center justify-center hover:bg-ajackal-purple/30 transition-colors"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 6L15 12L9 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
               </div>
             </div>
@@ -203,7 +287,10 @@ const ExamplesSection = () => {
               {videoExamples.map((video) => (
                 <div 
                   key={video.id} 
-                  className="glass-card rounded-xl overflow-hidden transition-all duration-300 hover:shadow-glow group"
+                  className={`glass-card rounded-xl overflow-hidden transition-all duration-300 hover:shadow-glow group ${
+                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                  }`}
+                  style={{ transitionDelay: `${300 + video.id * 100}ms` }}
                 >
                   <div className="relative">
                     <img 
@@ -214,9 +301,7 @@ const ExamplesSection = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-ajackal-black to-transparent opacity-60"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="h-12 w-12 rounded-full bg-ajackal-gradient flex items-center justify-center opacity-90 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                        </svg>
+                        <Play className="h-6 w-6 text-white" />
                       </div>
                     </div>
                   </div>
