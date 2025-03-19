@@ -27,15 +27,15 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="h-12 w-12 relative">
+        <div className="flex items-center gap-3">
+          <div className="h-14 w-14 md:h-16 md:w-16 relative">
             <img 
               src="/lovable-uploads/e9d475c9-91bf-4926-a570-a8c3c93fae65.png" 
               alt="Anti-Jackal Logo" 
               className="h-full w-full object-contain relative z-10"
             />
           </div>
-          <span className="font-bold text-xl md:text-2xl ajackal-gradient-text">Anti-Jackal</span>
+          <span className="font-bold text-xl md:text-2xl lg:text-3xl ajackal-gradient-text">Anti-Jackal</span>
         </div>
         
         {/* Desktop Navigation */}
