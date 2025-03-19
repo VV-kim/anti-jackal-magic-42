@@ -1,8 +1,12 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { ImageIcon, Film, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  ImageIcon, 
+  Film,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
 
 // Example data
 const photoExamples = [
@@ -52,7 +56,6 @@ const videoExamples = [
 
 const ExamplesSection = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [sliderValue, setSliderValue] = useState([50]);
   
   const nextPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev === photoExamples.length - 1 ? 0 : prev + 1));
@@ -103,12 +106,23 @@ const ExamplesSection = () => {
                 </p>
               </div>
               
-              {/* Interactive Before/After Slider */}
+              {/* Static Before/After Split View */}
               <div className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card">
-                {/* Container for both images */}
-                <div className="relative h-full w-full">
-                  {/* "After" image (background, full width) */}
-                  <div className="absolute inset-0 w-full h-full">
+                <div className="flex h-full">
+                  {/* Before Image - Left half */}
+                  <div className="w-1/2 h-full relative">
+                    <img 
+                      src={photoExamples[currentPhotoIndex].before} 
+                      alt="До" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+                      <span className="text-sm font-medium">До</span>
+                    </div>
+                  </div>
+                  
+                  {/* After Image - Right half */}
+                  <div className="w-1/2 h-full relative">
                     <img 
                       src={photoExamples[currentPhotoIndex].after} 
                       alt="После" 
@@ -118,51 +132,10 @@ const ExamplesSection = () => {
                       <span className="text-sm font-medium">После</span>
                     </div>
                   </div>
-                  
-                  {/* "Before" image (foreground, clipped) */}
-                  <div 
-                    className="absolute inset-0 h-full overflow-hidden" 
-                    style={{ 
-                      width: `${sliderValue[0]}%`,
-                      clipPath: `inset(0 0 0 0)`,
-                    }}
-                  >
-                    <img 
-                      src={photoExamples[currentPhotoIndex].before} 
-                      alt="До" 
-                      className="absolute top-0 left-0 h-full w-full object-cover"
-                      style={{ 
-                        width: `${100 / (sliderValue[0]/100)}%`,
-                        maxWidth: `${100 * (100/sliderValue[0])}%`,
-                        minWidth: '100%'
-                      }}
-                    />
-                    <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
-                      <span className="text-sm font-medium">До</span>
-                    </div>
-                  </div>
-                  
-                  {/* Slider divider line */}
-                  <div 
-                    className="absolute top-0 bottom-0 w-0.5 bg-white/90 z-20 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                    style={{ left: `${sliderValue[0]}%` }}
-                  >
-                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-8 w-8 rounded-full bg-white shadow-lg flex items-center justify-center">
-                      <div className="h-2 w-2 rounded-full bg-ajackal-black"></div>
-                    </div>
-                  </div>
                 </div>
                 
-                {/* Range slider at the bottom */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                  <Slider
-                    value={sliderValue}
-                    onValueChange={setSliderValue}
-                    max={100}
-                    step={1}
-                    className="w-full"
-                  />
-                </div>
+                {/* Vertical divider line */}
+                <div className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
               </div>
               
               {/* Navigation Controls */}
@@ -178,10 +151,10 @@ const ExamplesSection = () => {
                     <button 
                       key={index}
                       onClick={() => setCurrentPhotoIndex(index)}
-                      className={`h-2 transition-all ${
+                      className={`h-2 w-2 rounded-full transition-all ${
                         index === currentPhotoIndex 
-                          ? 'bg-ajackal-gradient w-8 rounded-full' 
-                          : 'bg-ajackal-white/30 hover:bg-ajackal-white/50 w-2 rounded-full'
+                          ? 'bg-ajackal-gradient w-8' 
+                          : 'bg-ajackal-white/30 hover:bg-ajackal-white/50'
                       }`}
                       aria-label={`Пример ${index + 1}`}
                     />
