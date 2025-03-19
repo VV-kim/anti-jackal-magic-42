@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageIcon, Film, Play } from 'lucide-react';
@@ -72,7 +73,7 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, alt }: BeforeAfterSliderPr
         </div>
       </div>
       
-      {/* After image (clipped) */}
+      {/* After image (clipped by slider) */}
       <div 
         className="absolute inset-0 overflow-hidden"
         style={{ width: `${sliderPosition}%` }}
@@ -81,6 +82,7 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, alt }: BeforeAfterSliderPr
           src={afterImage} 
           alt={`${alt} - после обработки`} 
           className="w-full h-full object-cover"
+          style={{ width: '100vw' }} // Make sure it's the same width as the container
         />
       </div>
       
