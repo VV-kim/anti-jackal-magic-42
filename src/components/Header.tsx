@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Square } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,10 +38,7 @@ const Header = () => {
           <div className="flex flex-col items-start">
             <div className="flex items-center gap-2">
               <span className="font-bold text-xl md:text-2xl lg:text-3xl ajackal-gradient-text">Anti-Jackal</span>
-              <span className="text-sm font-medium text-white/70 bg-white/10 px-2 py-0.5 rounded-md">beta</span>
-            </div>
-            <div className="mt-1 ml-1">
-              <Square className="h-3 w-3 text-white fill-white animate-pulse" />
+              <span className="text-xs font-medium bg-gradient-to-r from-ajackal-purple/30 to-ajackal-pink/30 border border-white/20 px-2 py-0.5 rounded-md backdrop-blur-sm text-white/90 shadow-sm">beta</span>
             </div>
           </div>
         </div>
