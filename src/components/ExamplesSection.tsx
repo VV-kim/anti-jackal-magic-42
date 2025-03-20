@@ -213,7 +213,7 @@ const ExamplesSection = () => {
                     />
                     <div 
                       className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10 transition-opacity duration-300"
-                      style={{ opacity: sliderPosition < 100 ? 1 : 0 }}
+                      style={{ opacity: sliderPosition < 90 ? 1 : 0 }}
                     >
                       <span className="text-sm font-medium">После</span>
                     </div>
@@ -238,7 +238,7 @@ const ExamplesSection = () => {
                     />
                     <div 
                       className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10 transition-opacity duration-300"
-                      style={{ opacity: sliderPosition > 0 ? 1 : 0 }}
+                      style={{ opacity: sliderPosition > 10 ? 1 : 0 }}
                     >
                       <span className="text-sm font-medium">До</span>
                     </div>
