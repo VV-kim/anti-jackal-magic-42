@@ -1,6 +1,7 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
 import { ImageIcon, Film } from 'lucide-react';
 
 // Example data
@@ -36,71 +37,7 @@ const videoExamples = [
 ];
 
 const ExamplesSection = () => {
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  
-  const handleMouseDown = () => {
-    isDragging.current = true;
-  };
-  
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
-    if (!isDragging.current || !containerRef.current) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const newPosition = (x / rect.width) * 100;
-    
-    // Limit position between 0 and 100
-    setSliderPosition(Math.max(0, Math.min(100, newPosition)));
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement> | TouchEvent) => {
-    if (!containerRef.current) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.touches[0].clientX - rect.left;
-    const newPosition = (x / rect.width) * 100;
-    
-    // Limit position between 0 and 100
-    setSliderPosition(Math.max(0, Math.min(100, newPosition)));
-  };
-  
-  useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      isDragging.current = false;
-    };
-    
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      handleMouseMove(e);
-    };
-    
-    const handleGlobalTouchEnd = () => {
-      isDragging.current = false;
-    };
-    
-    const handleGlobalTouchMove = (e: TouchEvent) => {
-      if (isDragging.current) {
-        handleTouchMove(e);
-      }
-    };
-    
-    window.addEventListener('mouseup', handleGlobalMouseUp);
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-    window.addEventListener('touchend', handleGlobalTouchEnd);
-    window.addEventListener('touchmove', handleGlobalTouchMove, { passive: true });
-    
-    return () => {
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-      window.removeEventListener('mousemove', handleGlobalMouseMove);
-      window.removeEventListener('touchend', handleGlobalTouchEnd);
-      window.removeEventListener('touchmove', handleGlobalTouchMove);
-    };
-  }, []);
+  const [sliderValue, setSliderValue] = useState([50]);
   
   return (
     <section id="examples" className="py-20 bg-ajackal-off-black">
@@ -144,16 +81,7 @@ const ExamplesSection = () => {
               </div>
               
               {/* Interactive Before/After Slider */}
-              <div 
-                ref={containerRef}
-                className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card cursor-ew-resize"
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                onTouchStart={handleMouseDown}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleMouseUp}
-              >
+              <div className="w-full max-w-4xl mx-auto h-[400px] md:h-[500px] rounded-xl overflow-hidden relative glass-card">
                 {/* Container for both images */}
                 <div className="relative h-full w-full">
                   {/* "After" image (background, full width) */}
@@ -172,7 +100,7 @@ const ExamplesSection = () => {
                   <div 
                     className="absolute inset-0 h-full overflow-hidden" 
                     style={{ 
-                      width: `${sliderPosition}%`,
+                      width: `${sliderValue[0]}%`,
                       clipPath: `inset(0 0 0 0)`,
                     }}
                   >
@@ -181,8 +109,8 @@ const ExamplesSection = () => {
                       alt="До" 
                       className="absolute top-0 left-0 h-full w-full object-cover"
                       style={{ 
-                        width: `${100 / (sliderPosition/100)}%`,
-                        maxWidth: `${100 * (100/sliderPosition)}%`,
+                        width: `${100 / (sliderValue[0]/100)}%`,
+                        maxWidth: `${100 * (100/sliderValue[0])}%`,
                         minWidth: '100%'
                       }}
                     />
@@ -191,27 +119,26 @@ const ExamplesSection = () => {
                     </div>
                   </div>
                   
-                  {/* Slider divider line with thumb */}
+                  {/* Slider divider line */}
                   <div 
                     className="absolute top-0 bottom-0 w-0.5 bg-white/90 z-20 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                    style={{ left: `${sliderPosition}%` }}
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleMouseDown}
+                    style={{ left: `${sliderValue[0]}%` }}
                   >
-                    <div 
-                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-8 w-8 rounded-full bg-white shadow-lg flex items-center justify-center cursor-grab active:cursor-grabbing"
-                      onMouseDown={(e) => {
-                        e.stopPropagation();
-                        handleMouseDown();
-                      }}
-                      onTouchStart={(e) => {
-                        e.stopPropagation();
-                        handleMouseDown();
-                      }}
-                    >
+                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-8 w-8 rounded-full bg-white shadow-lg flex items-center justify-center">
                       <div className="h-2 w-2 rounded-full bg-ajackal-black"></div>
                     </div>
                   </div>
+                </div>
+                
+                {/* Range slider at the bottom */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                  <Slider
+                    value={sliderValue}
+                    onValueChange={setSliderValue}
+                    max={100}
+                    step={1}
+                    className="w-full"
+                  />
                 </div>
               </div>
             </div>
