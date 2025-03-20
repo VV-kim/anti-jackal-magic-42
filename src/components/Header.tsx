@@ -35,21 +35,23 @@ const Header = () => {
               className="h-full w-full object-contain relative z-10"
             />
           </div>
-          <span className="font-bold text-xl md:text-2xl lg:text-3xl ajackal-gradient-text">Anti-Jackal</span>
+          <div className="flex flex-col items-start">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-xl md:text-2xl lg:text-3xl ajackal-gradient-text">Anti-Jackal</span>
+              <span className="text-xs font-medium bg-gradient-to-r from-ajackal-purple/30 to-ajackal-pink/30 border border-white/20 px-2 py-0.5 rounded-md backdrop-blur-sm text-white/90 shadow-sm">beta</span>
+            </div>
+          </div>
         </div>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
+          <a href="#features" className="text-ajackal-white/100 hover:text-ajackal-white transition-colors">
             Преимущества
           </a>
-          <a href="#examples" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
+          <a href="#examples" className="text-ajackal-white/100 hover:text-ajackal-white transition-colors">
             Примеры
           </a>
-          <a href="#try" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
-            Попробовать
-          </a>
-          <a href="#contact" className="text-ajackal-white/90 hover:text-ajackal-white transition-colors">
+          <a href="#contact" className="text-ajackal-white/100 hover:text-ajackal-white transition-colors">
             Контакты
           </a>
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300">
