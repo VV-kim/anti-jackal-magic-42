@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageIcon, Film, ChevronLeft, ChevronRight, PlayCircle, PauseCircle } from 'lucide-react';
@@ -210,7 +211,10 @@ const ExamplesSection = () => {
                       alt="После" 
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10">
+                    <div 
+                      className="absolute bottom-4 right-4 glass-morph px-3 py-1 rounded-md z-10 transition-opacity duration-300"
+                      style={{ opacity: sliderPosition < 100 ? 1 : 0 }}
+                    >
                       <span className="text-sm font-medium">После</span>
                     </div>
                   </div>
@@ -232,7 +236,10 @@ const ExamplesSection = () => {
                         minWidth: '100%'
                       }}
                     />
-                    <div className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10">
+                    <div 
+                      className="absolute bottom-4 left-4 glass-morph px-3 py-1 rounded-md z-10 transition-opacity duration-300"
+                      style={{ opacity: sliderPosition > 0 ? 1 : 0 }}
+                    >
                       <span className="text-sm font-medium">До</span>
                     </div>
                   </div>
