@@ -64,7 +64,7 @@ const HeroSection = () => {
             {/* Before image (low quality) */}
             <div className="w-1/2 h-full relative">
               <img 
-                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?q=40&w=1050&auto=format&fit=crop" 
+                src="/lovable-uploads/16e25027-30c9-4698-a3c5-a0455877f7d5.png" 
                 alt="Изображение до улучшения" 
                 className="w-full h-full object-cover"
               />
@@ -76,7 +76,7 @@ const HeroSection = () => {
             {/* After image (high quality) */}
             <div className="w-1/2 h-full relative">
               <img 
-                src="https://images.unsplash.com/photo-1541701494587-cb58502fabe0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=90" 
+                src="/lovable-uploads/194ec5c2-62b8-4b3a-aab0-d7795c08282b.png" 
                 alt="Изображение после улучшения" 
                 className="w-full h-full object-cover"
               />
