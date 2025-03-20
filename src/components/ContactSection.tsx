@@ -124,7 +124,7 @@ const ContactSection = () => {
           {/* Contact Information */}
           <div className="flex flex-col justify-between">
             {/* Company Info */}
-            <div className="glass-card p-6 md:p-8 rounded-xl mb-8">
+            <div className="glass-card p-6 md:p-8 rounded-xl">
               <h3 className="text-2xl font-semibold mb-6">Контактная информация</h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -150,17 +150,6 @@ const ContactSection = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Partnership */}
-            <div className="glass-card p-6 md:p-8 rounded-xl">
-              <h3 className="text-2xl font-semibold mb-4">Для бизнес-партнёров</h3>
-              <p className="text-ajackal-white/80 mb-6">
-                Заинтересованы в партнёрстве или интеграции нашей технологии в ваш продукт? Свяжитесь с нашей командой для обсуждения возможностей сотрудничества.
-              </p>
-              <Button className="bg-ajackal-off-black hover:bg-ajackal-black border border-ajackal-purple/50 w-full">
-                Узнать о партнёрстве
-              </Button>
             </div>
           </div>
         </div>

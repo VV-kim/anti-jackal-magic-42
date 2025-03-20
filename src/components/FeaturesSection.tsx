@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { 
   ImageIcon, 
   Upload, 
   Zap, 
-  BarChart3, 
   MonitorSmartphone, 
   Shield
 } from 'lucide-react';
@@ -23,12 +21,7 @@ const features = [
   {
     icon: <Zap className="h-8 w-8 text-ajackal-purple" />,
     title: 'Высокая скорость',
-    description: 'Мгновенная обработка благодаря оптимизированным алгоритмам и использованию облачных вычислений.'
-  },
-  {
-    icon: <BarChart3 className="h-8 w-8 text-ajackal-purple" />,
-    title: 'Аналитика качества',
-    description: 'Подробный анализ исходного и улучшенного материала с визуализацией изменений и метриками улучшения.'
+    description: 'Быстрая обработка благодаря оптимизированным алгоритмам и использованию облачных вычислений.'
   },
   {
     icon: <MonitorSmartphone className="h-8 w-8 text-ajackal-purple" />,
