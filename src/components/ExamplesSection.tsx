@@ -1,8 +1,8 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
-import { ImageIcon, Film, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ImageIcon, Film } from 'lucide-react';
 
 // Example data
 const photoExamples = [
@@ -12,20 +12,6 @@ const photoExamples = [
     description: "Улучшение деталей лица, текстуры кожи и четкости",
     before: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=60",
     after: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=95"
-  },
-  {
-    id: 2,
-    title: "Пейзажная фотография",
-    description: "Улучшение детализации текстур и цветовой гаммы",
-    before: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=60",
-    after: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=95"
-  },
-  {
-    id: 3,
-    title: "Макросъемка",
-    description: "Повышение детализации мелких объектов и текстур",
-    before: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=60",
-    after: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=95"
   }
 ];
 
@@ -51,16 +37,7 @@ const videoExamples = [
 ];
 
 const ExamplesSection = () => {
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [sliderValue, setSliderValue] = useState([50]);
-  
-  const nextPhoto = () => {
-    setCurrentPhotoIndex((prev) => (prev === photoExamples.length - 1 ? 0 : prev + 1));
-  };
-  
-  const prevPhoto = () => {
-    setCurrentPhotoIndex((prev) => (prev === 0 ? photoExamples.length - 1 : prev - 1));
-  };
   
   return (
     <section id="examples" className="py-20 bg-ajackal-off-black">
@@ -96,10 +73,10 @@ const ExamplesSection = () => {
               {/* Current Example Info */}
               <div className="mb-6 text-center">
                 <h3 className="text-2xl font-semibold mb-2">
-                  {photoExamples[currentPhotoIndex].title}
+                  {photoExamples[0].title}
                 </h3>
                 <p className="text-ajackal-white/70">
-                  {photoExamples[currentPhotoIndex].description}
+                  {photoExamples[0].description}
                 </p>
               </div>
               
@@ -110,7 +87,7 @@ const ExamplesSection = () => {
                   {/* "After" image (background, full width) */}
                   <div className="absolute inset-0 w-full h-full">
                     <img 
-                      src={photoExamples[currentPhotoIndex].after} 
+                      src={photoExamples[0].after} 
                       alt="После" 
                       className="w-full h-full object-cover"
                     />
@@ -128,7 +105,7 @@ const ExamplesSection = () => {
                     }}
                   >
                     <img 
-                      src={photoExamples[currentPhotoIndex].before} 
+                      src={photoExamples[0].before} 
                       alt="До" 
                       className="absolute top-0 left-0 h-full w-full object-cover"
                       style={{ 
@@ -163,36 +140,6 @@ const ExamplesSection = () => {
                     className="w-full"
                   />
                 </div>
-              </div>
-              
-              {/* Navigation Controls */}
-              <div className="flex justify-center items-center gap-4 mt-8">
-                <button 
-                  onClick={prevPhoto}
-                  className="h-10 w-10 rounded-full glass-morph flex items-center justify-center hover:bg-ajackal-purple/30 transition-colors"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <div className="flex gap-2">
-                  {photoExamples.map((_, index) => (
-                    <button 
-                      key={index}
-                      onClick={() => setCurrentPhotoIndex(index)}
-                      className={`h-2 transition-all ${
-                        index === currentPhotoIndex 
-                          ? 'bg-ajackal-gradient w-8 rounded-full' 
-                          : 'bg-ajackal-white/30 hover:bg-ajackal-white/50 w-2 rounded-full'
-                      }`}
-                      aria-label={`Пример ${index + 1}`}
-                    />
-                  ))}
-                </div>
-                <button 
-                  onClick={nextPhoto}
-                  className="h-10 w-10 rounded-full glass-morph flex items-center justify-center hover:bg-ajackal-purple/30 transition-colors"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
               </div>
             </div>
           </TabsContent>
