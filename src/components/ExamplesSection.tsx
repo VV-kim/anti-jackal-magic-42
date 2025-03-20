@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageIcon, Film, ChevronLeft, ChevronRight, PlayCircle, PauseCircle } from 'lucide-react';
@@ -165,7 +164,6 @@ const ExamplesSection = () => {
     };
   }, []);
   
-  // Pause video when component unmounts
   useEffect(() => {
     return () => {
       if (videoRef.current) {
@@ -174,7 +172,6 @@ const ExamplesSection = () => {
     };
   }, []);
   
-  // Reset video play state when changing videos
   useEffect(() => {
     setIsPlaying(false);
   }, [currentVideoIndex]);
@@ -339,22 +336,31 @@ const ExamplesSection = () => {
                     poster={videoExamples[currentVideoIndex].poster}
                     className="w-full h-full object-cover"
                     playsInline
+                    onClick={toggleVideo}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ajackal-black to-transparent opacity-60 pointer-events-none"></div>
                   
-                  <button 
-                    className="absolute inset-0 flex items-center justify-center"
-                    onClick={toggleVideo}
-                    aria-label={isPlaying ? "Пауза" : "Воспроизвести видео"}
-                  >
-                    <div className="h-16 w-16 rounded-full bg-ajackal-gradient flex items-center justify-center opacity-90 hover:scale-110 transition-transform">
-                      {isPlaying ? (
-                        <PauseCircle className="h-8 w-8 text-white" />
-                      ) : (
+                  {!isPlaying && (
+                    <button 
+                      className="absolute inset-0 flex items-center justify-center"
+                      onClick={toggleVideo}
+                      aria-label="Воспроизвести видео"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-ajackal-gradient flex items-center justify-center opacity-90 hover:scale-110 transition-transform">
                         <PlayCircle className="h-8 w-8 text-white" />
-                      )}
-                    </div>
-                  </button>
+                      </div>
+                    </button>
+                  )}
+
+                  {isPlaying && (
+                    <button 
+                      className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-ajackal-gradient flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity"
+                      onClick={toggleVideo}
+                      aria-label="Пауза"
+                    >
+                      <PauseCircle className="h-6 w-6 text-white" />
+                    </button>
+                  )}
                 </div>
               </div>
               
