@@ -54,10 +54,11 @@ const videoExamples = [
 
 const ExamplesSection = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50);
-  const [playingVideo, setPlayingVideo] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const isDragging = useRef(false);
     
   const nextPhoto = () => {
@@ -66,6 +67,42 @@ const ExamplesSection = () => {
   
   const prevPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev === 0 ? photoExamples.length - 1 : prev - 1));
+  };
+
+  const nextVideo = () => {
+    pauseVideo();
+    setCurrentVideoIndex((prev) => (prev === videoExamples.length - 1 ? 0 : prev + 1));
+  };
+  
+  const prevVideo = () => {
+    pauseVideo();
+    setCurrentVideoIndex((prev) => (prev === 0 ? videoExamples.length - 1 : prev - 1));
+  };
+  
+  const toggleVideo = () => {
+    if (!videoRef.current) return;
+    
+    if (isPlaying) {
+      pauseVideo();
+    } else {
+      playVideo();
+    }
+  };
+  
+  const playVideo = () => {
+    if (!videoRef.current) return;
+    
+    videoRef.current.play().catch(error => {
+      console.error("Error playing video:", error);
+    });
+    setIsPlaying(true);
+  };
+  
+  const pauseVideo = () => {
+    if (!videoRef.current) return;
+    
+    videoRef.current.pause();
+    setIsPlaying(false);
   };
   
   const handleMouseDown = () => {
@@ -94,25 +131,6 @@ const ExamplesSection = () => {
     const newPosition = (x / rect.width) * 100;
     
     setSliderPosition(Math.max(0, Math.min(100, newPosition)));
-  };
-  
-  const toggleVideo = (index: number) => {
-    const videoElement = videoRefs.current[index];
-    if (!videoElement) return;
-    
-    if (playingVideo === index) {
-      videoElement.pause();
-      setPlayingVideo(null);
-    } else {
-      if (playingVideo !== null && videoRefs.current[playingVideo]) {
-        videoRefs.current[playingVideo]?.pause();
-      }
-      
-      videoElement.play().catch(error => {
-        console.error("Error playing video:", error);
-      });
-      setPlayingVideo(index);
-    }
   };
   
   useEffect(() => {
@@ -147,14 +165,19 @@ const ExamplesSection = () => {
     };
   }, []);
   
+  // Pause video when component unmounts
   useEffect(() => {
     return () => {
-      if (playingVideo !== null && videoRefs.current[playingVideo]) {
-        videoRefs.current[playingVideo]?.pause();
+      if (videoRef.current) {
+        videoRef.current.pause();
       }
-      setPlayingVideo(null);
     };
   }, []);
+  
+  // Reset video play state when changing videos
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [currentVideoIndex]);
   
   return (
     <section id="examples" className="py-20 bg-ajackal-off-black">
@@ -298,48 +321,78 @@ const ExamplesSection = () => {
           </TabsContent>
           
           <TabsContent value="videos" className="focus-visible:outline-none focus-visible:ring-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {videoExamples.map((video, index) => (
-                <div 
-                  key={video.id} 
-                  className="glass-card rounded-xl overflow-hidden transition-all duration-300 hover:shadow-glow group"
-                >
-                  <div className="relative">
-                    <video 
-                      ref={el => videoRefs.current[index] = el}
-                      src={video.src}
-                      poster={video.poster}
-                      className="w-full h-48 object-cover"
-                      playsInline
-                      onClick={() => toggleVideo(index)}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ajackal-black to-transparent opacity-60 pointer-events-none"></div>
-                    <button 
-                      className="absolute inset-0 flex items-center justify-center"
-                      onClick={() => toggleVideo(index)}
-                      aria-label={playingVideo === index ? "Пауза" : "Воспроизвести видео"}
-                    >
-                      <div className="h-12 w-12 rounded-full bg-ajackal-gradient flex items-center justify-center opacity-90 group-hover:scale-110 transition-transform">
-                        {playingVideo === index ? (
-                          <PauseCircle className="h-6 w-6 text-white" />
-                        ) : (
-                          <PlayCircle className="h-6 w-6 text-white" />
-                        )}
-                      </div>
-                    </button>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{video.title}</h3>
-                    <p className="text-ajackal-white/70 text-sm">{video.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="text-center mt-10">
-              <div className="glass-morph px-5 py-3 rounded-lg inline-block">
-                <p className="text-sm text-ajackal-white/80">
-                  Нажмите на видео, чтобы воспроизвести или приостановить.
+            <div className="relative">
+              <div className="mb-6 text-center">
+                <h3 className="text-2xl font-semibold mb-2">
+                  {videoExamples[currentVideoIndex].title}
+                </h3>
+                <p className="text-ajackal-white/70">
+                  {videoExamples[currentVideoIndex].description}
                 </p>
+              </div>
+              
+              <div className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden relative glass-card">
+                <div className="relative aspect-video">
+                  <video 
+                    ref={videoRef}
+                    src={videoExamples[currentVideoIndex].src}
+                    poster={videoExamples[currentVideoIndex].poster}
+                    className="w-full h-full object-cover"
+                    playsInline
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ajackal-black to-transparent opacity-60 pointer-events-none"></div>
+                  
+                  <button 
+                    className="absolute inset-0 flex items-center justify-center"
+                    onClick={toggleVideo}
+                    aria-label={isPlaying ? "Пауза" : "Воспроизвести видео"}
+                  >
+                    <div className="h-16 w-16 rounded-full bg-ajackal-gradient flex items-center justify-center opacity-90 hover:scale-110 transition-transform">
+                      {isPlaying ? (
+                        <PauseCircle className="h-8 w-8 text-white" />
+                      ) : (
+                        <PlayCircle className="h-8 w-8 text-white" />
+                      )}
+                    </div>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex justify-center items-center gap-4 mt-8">
+                <button 
+                  onClick={prevVideo}
+                  className="h-10 w-10 rounded-full glass-morph flex items-center justify-center hover:bg-ajackal-purple/30 transition-colors"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <div className="flex gap-2">
+                  {videoExamples.map((_, index) => (
+                    <button 
+                      key={index}
+                      onClick={() => setCurrentVideoIndex(index)}
+                      className={`h-2 transition-all ${
+                        index === currentVideoIndex 
+                          ? 'bg-ajackal-gradient w-8 rounded-full' 
+                          : 'bg-ajackal-white/30 hover:bg-ajackal-white/50 w-2 rounded-full'
+                      }`}
+                      aria-label={`Видео ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                <button 
+                  onClick={nextVideo}
+                  className="h-10 w-10 rounded-full glass-morph flex items-center justify-center hover:bg-ajackal-purple/30 transition-colors"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="text-center mt-6">
+                <div className="glass-morph px-5 py-3 rounded-lg inline-block">
+                  <p className="text-sm text-ajackal-white/80">
+                    Нажмите на видео, чтобы воспроизвести или приостановить.
+                  </p>
+                </div>
               </div>
             </div>
           </TabsContent>
