@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, LogIn } from 'lucide-react';
+import { Menu, X, LogIn, Wallet } from 'lucide-react';
 import AuthDialog from './AuthDialog';
+import TopUpBalanceDialog from './TopUpBalanceDialog';
 
 // Mock user data - in a real app, this would come from your authentication system
 interface User {
@@ -14,6 +15,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  const [isTopUpDialogOpen, setIsTopUpDialogOpen] = useState(false);
   // Add mock user state - in a real app, this would be managed by your auth context
   const [user, setUser] = useState<User | null>(null);
 
@@ -36,6 +38,16 @@ const Header = () => {
       balance: 5000, // Example balance in rubles
     });
     setIsAuthDialogOpen(false);
+  };
+
+  // Mock function to handle successful balance top-up
+  const handleTopUpSuccess = (amount: number) => {
+    if (user) {
+      setUser({
+        ...user,
+        balance: user.balance + amount
+      });
+    }
   };
 
   return (
@@ -77,9 +89,17 @@ const Header = () => {
           
           {user && user.isLoggedIn ? (
             <div className="flex items-center gap-4">
-              <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white">
+              <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white flex items-center">
                 <span className="text-sm font-medium">Баланс: {user.balance} ₽</span>
               </div>
+              <Button 
+                variant="outline" 
+                className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 flex items-center gap-2"
+                onClick={() => setIsTopUpDialogOpen(true)}
+              >
+                <Wallet size={18} />
+                Пополнить
+              </Button>
               <Button 
                 variant="outline" 
                 className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20"
@@ -149,9 +169,20 @@ const Header = () => {
             
             {user && user.isLoggedIn ? (
               <>
-                <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white">
+                <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white flex items-center justify-between">
                   <span className="text-sm font-medium">Баланс: {user.balance} ₽</span>
                 </div>
+                <Button 
+                  variant="outline" 
+                  className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full flex items-center justify-center gap-2"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsTopUpDialogOpen(true);
+                  }}
+                >
+                  <Wallet size={18} />
+                  Пополнить баланс
+                </Button>
                 <Button 
                   variant="outline" 
                   className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full"
@@ -187,6 +218,13 @@ const Header = () => {
         isOpen={isAuthDialogOpen} 
         onClose={() => setIsAuthDialogOpen(false)} 
         onAuthSuccess={handleAuthSuccess}
+      />
+
+      {/* Top Up Balance Dialog */}
+      <TopUpBalanceDialog
+        isOpen={isTopUpDialogOpen}
+        onClose={() => setIsTopUpDialogOpen(false)}
+        onSuccess={handleTopUpSuccess}
       />
     </header>
   );
