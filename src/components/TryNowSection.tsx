@@ -9,7 +9,9 @@ import {
   CheckCircle,
   X,
   Download,
-  RefreshCw
+  RefreshCw,
+  Wallet,
+  ArrowRight
 } from 'lucide-react';
 import { 
   Select,
@@ -18,6 +20,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import TopUpBalanceDialog from './TopUpBalanceDialog';
+import { useNavigate } from 'react-router-dom';
+
+// Mock user state - In a real app, this would come from your authentication context
+interface User {
+  isLoggedIn: boolean;
+  balance: number;
+}
 
 const TryNowSection = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -27,8 +38,14 @@ const TryNowSection = () => {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [fileType, setFileType] = useState<'image' | 'video'>('image');
   const [scale, setScale] = useState<string>('3');
+  const [isTopUpDialogOpen, setIsTopUpDialogOpen] = useState(false);
+  
+  // Mock user data - In a real app, this would be fetched from your auth context
+  const [user, setUser] = useState<User | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -91,6 +108,70 @@ const TryNowSection = () => {
     
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+  
+  const getPriceForFullDownload = () => {
+    return fileType === 'image' ? 5 : 60;
+  };
+  
+  const handleDownload = (isDemo: boolean) => {
+    if (!isDemo) {
+      const price = getPriceForFullDownload();
+      
+      // Check if user is logged in
+      if (!user?.isLoggedIn) {
+        toast({
+          title: "Требуется авторизация",
+          description: "Для скачивания полной версии необходимо авторизоваться",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Check if user has enough balance
+      if (user.balance < price) {
+        toast({
+          title: "Недостаточно средств",
+          description: `Для скачивания полной версии необходимо ${price} ₽. Ваш баланс: ${user.balance} ₽`,
+          variant: "destructive"
+        });
+        
+        setIsTopUpDialogOpen(true);
+        return;
+      }
+      
+      // Process payment
+      setUser({
+        ...user,
+        balance: user.balance - price
+      });
+      
+      toast({
+        title: "Оплата прошла успешно",
+        description: `С вашего баланса списано ${price} ₽`,
+        variant: "default"
+      });
+    }
+    
+    // For demo purposes, this just creates a download link
+    if (processedImage) {
+      const link = document.createElement('a');
+      link.href = processedImage;
+      link.download = `anti-jackal-${isDemo ? 'demo' : 'full'}-${Date.now()}.${fileType === 'image' ? 'jpg' : 'mp4'}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+  
+  // Mock function to handle successful balance top-up
+  const handleTopUpSuccess = (amount: number) => {
+    if (user) {
+      setUser({
+        ...user,
+        balance: user.balance + amount
+      });
     }
   };
   
@@ -234,10 +315,23 @@ const TryNowSection = () => {
                         controls
                       />
                     )}
-                    <div className="absolute bottom-4 right-4 z-20">
-                      <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient flex items-center gap-2">
+                    <div className="absolute bottom-4 right-4 z-20 flex gap-2">
+                      <Button 
+                        className="bg-ajackal-black/80 hover:bg-ajackal-black border border-ajackal-purple/50 flex items-center gap-2"
+                        onClick={() => handleDownload(true)}
+                      >
                         <Download className="h-4 w-4" />
-                        <span>Скачать</span>
+                        <span>Скачать демо</span>
+                      </Button>
+                      <Button 
+                        className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient flex items-center gap-2"
+                        onClick={() => handleDownload(false)}
+                      >
+                        <Download className="h-4 w-4" />
+                        <span>Скачать полностью</span>
+                        <span className="text-xs opacity-80 ml-1">
+                          ({fileType === 'image' ? '5' : '60'} ₽)
+                        </span>
                       </Button>
                     </div>
                   </>
@@ -306,19 +400,35 @@ const TryNowSection = () => {
             )}
           </div>
           
-          {/* Note */}
+          {/* Pricing Info */}
           <div className="mt-8 text-center">
             <div className="glass-morph px-4 py-2 rounded-lg inline-block">
               <p className="text-sm text-ajackal-white/70 flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 text-ajackal-purple" />
                 <span>
-                  Это демо-версия. В реальном приложении файл будет отправлен на обработку на сервер.
+                  Цены: <strong>{5} ₽</strong> за фото, <strong>{60} ₽</strong> за видео. {' '}
+                  {!user?.isLoggedIn && (
+                    <Button 
+                      variant="link" 
+                      className="h-auto p-0 text-ajackal-purple"
+                      onClick={() => navigate('/')}
+                    >
+                      Авторизуйтесь <ArrowRight className="h-3 w-3 ml-1" />
+                    </Button>
+                  )}
                 </span>
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Top Up Balance Dialog */}
+      <TopUpBalanceDialog
+        isOpen={isTopUpDialogOpen}
+        onClose={() => setIsTopUpDialogOpen(false)}
+        onSuccess={handleTopUpSuccess}
+      />
     </section>
   );
 };
