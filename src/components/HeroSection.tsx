@@ -1,10 +1,20 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, LogIn } from 'lucide-react';
+import AuthDialog from './AuthDialog';
+
+// Mock user interface
+interface User {
+  isLoggedIn: boolean;
+  balance: number;
+}
 
 const HeroSection = () => {
   const pixelRef = useRef<HTMLDivElement>(null);
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  // Mock user state - In a real app, this would be fetched from your auth context
+  const [user, setUser] = useState<User | null>(null);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +30,16 @@ const HeroSection = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
+  // Mock function to handle successful authentication
+  const handleAuthSuccess = () => {
+    // In a real app, this would set the user data from your auth system
+    setUser({
+      isLoggedIn: true,
+      balance: 5000, // Example balance in rubles
+    });
+    setIsAuthDialogOpen(false);
+  };
   
   return (
     <section className="min-h-screen pt-20 relative overflow-hidden">
@@ -55,6 +75,17 @@ const HeroSection = () => {
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient text-white px-8 py-6 rounded-xl text-lg">
             <a href="#try">Попробовать бесплатно</a>
           </Button>
+          
+          {!user?.isLoggedIn && (
+            <Button 
+              variant="outline" 
+              className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 px-8 py-6 rounded-xl text-lg"
+              onClick={() => setIsAuthDialogOpen(true)}
+            >
+              <LogIn className="mr-2 h-5 w-5" />
+              Авторизуйтесь
+            </Button>
+          )}
         </div>
         
         {/* Image showcase with before/after effect */}
@@ -100,6 +131,13 @@ const HeroSection = () => {
           <ChevronDown size={20} className="animate-bounce" />
         </a>
       </div>
+
+      {/* Auth Dialog */}
+      <AuthDialog 
+        isOpen={isAuthDialogOpen} 
+        onClose={() => setIsAuthDialogOpen(false)} 
+        onAuthSuccess={handleAuthSuccess}
+      />
     </section>
   );
 };

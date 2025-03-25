@@ -89,16 +89,16 @@ const Header = () => {
           
           {user && user.isLoggedIn ? (
             <div className="flex items-center gap-4">
-              <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white flex items-center">
-                <span className="text-sm font-medium">Баланс: {user.balance} ₽</span>
-              </div>
               <Button 
                 variant="outline" 
                 className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 flex items-center gap-2"
                 onClick={() => setIsTopUpDialogOpen(true)}
               >
                 <Wallet size={18} />
-                Пополнить
+                <span>Баланс: {user.balance} ₽</span>
+              </Button>
+              <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300">
+                <a href="#try">Попробовать бесплатно</a>
               </Button>
               <Button 
                 variant="outline" 
@@ -169,19 +169,22 @@ const Header = () => {
             
             {user && user.isLoggedIn ? (
               <>
-                <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white flex items-center justify-between">
-                  <span className="text-sm font-medium">Баланс: {user.balance} ₽</span>
-                </div>
                 <Button 
                   variant="outline" 
-                  className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full flex items-center justify-center gap-2"
+                  className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full flex items-center justify-between"
                   onClick={() => {
                     setIsMobileMenuOpen(false);
                     setIsTopUpDialogOpen(true);
                   }}
                 >
-                  <Wallet size={18} />
-                  Пополнить баланс
+                  <span className="flex items-center gap-2">
+                    <Wallet size={18} />
+                    Баланс
+                  </span>
+                  <span className="font-medium">{user.balance} ₽</span>
+                </Button>
+                <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300 w-full">
+                  <a href="#try">Попробовать бесплатно</a>
                 </Button>
                 <Button 
                   variant="outline" 
