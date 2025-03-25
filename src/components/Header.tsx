@@ -4,10 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, LogIn } from 'lucide-react';
 import AuthDialog from './AuthDialog';
 
+// Mock user data - in a real app, this would come from your authentication system
+interface User {
+  isLoggedIn: boolean;
+  balance: number;
+}
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  // Add mock user state - in a real app, this would be managed by your auth context
+  const [user, setUser] = useState<User | null>(null);
 
   // Handle scroll event to style header on scroll
   useEffect(() => {
@@ -19,6 +27,16 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Mock function to handle successful authentication
+  const handleAuthSuccess = () => {
+    // In a real app, this would set the user data from your auth system
+    setUser({
+      isLoggedIn: true,
+      balance: 5000, // Example balance in rubles
+    });
+    setIsAuthDialogOpen(false);
+  };
 
   return (
     <header 
@@ -56,17 +74,35 @@ const Header = () => {
           <a href="#contact" className="text-ajackal-white/100 hover:text-ajackal-white transition-colors">
             Контакты
           </a>
-          <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300">
-            <a href="#try">Попробовать бесплатно</a>
-          </Button>
-          <Button 
-            variant="outline" 
-            className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20"
-            onClick={() => setIsAuthDialogOpen(true)}
-          >
-            <LogIn size={18} className="mr-2" />
-            Войти
-          </Button>
+          
+          {user && user.isLoggedIn ? (
+            <div className="flex items-center gap-4">
+              <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white">
+                <span className="text-sm font-medium">Баланс: {user.balance} ₽</span>
+              </div>
+              <Button 
+                variant="outline" 
+                className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20"
+                onClick={() => setUser(null)}
+              >
+                Выйти
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300">
+                <a href="#try">Попробовать бесплатно</a>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20"
+                onClick={() => setIsAuthDialogOpen(true)}
+              >
+                <LogIn size={18} className="mr-2" />
+                Войти
+              </Button>
+            </>
+          )}
         </nav>
         
         {/* Mobile menu button */}
@@ -110,20 +146,38 @@ const Header = () => {
             >
               Контакты
             </a>
-            <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300 w-full mt-2">
-              <a href="#try">Попробовать бесплатно</a>
-            </Button>
-            <Button 
-              variant="outline" 
-              className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsAuthDialogOpen(true);
-              }}
-            >
-              <LogIn size={18} className="mr-2" />
-              Войти
-            </Button>
+            
+            {user && user.isLoggedIn ? (
+              <>
+                <div className="px-4 py-2 rounded-md bg-ajackal-purple/20 border border-ajackal-purple/30 text-ajackal-white">
+                  <span className="text-sm font-medium">Баланс: {user.balance} ₽</span>
+                </div>
+                <Button 
+                  variant="outline" 
+                  className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full"
+                  onClick={() => setUser(null)}
+                >
+                  Выйти
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300 w-full mt-2">
+                  <a href="#try">Попробовать бесплатно</a>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsAuthDialogOpen(true);
+                  }}
+                >
+                  <LogIn size={18} className="mr-2" />
+                  Войти
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -132,6 +186,7 @@ const Header = () => {
       <AuthDialog 
         isOpen={isAuthDialogOpen} 
         onClose={() => setIsAuthDialogOpen(false)} 
+        onAuthSuccess={handleAuthSuccess}
       />
     </header>
   );

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Dialog, 
@@ -28,10 +29,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Mail, Lock } from 'lucide-react';
 import BrandTelegram from './icons/BrandTelegram';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onAuthSuccess?: () => void;
 }
 
 // Login form schema
@@ -53,8 +56,9 @@ const registerSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
+const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, onAuthSuccess }) => {
   const [activeTab, setActiveTab] = useState<string>('login');
+  const { toast } = useToast();
 
   // Login form
   const loginForm = useForm<LoginFormValues>({
@@ -78,13 +82,42 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
   // Handle login form submission
   const onLoginSubmit = (values: LoginFormValues) => {
     console.log('Login values:', values);
-    // Handle login logic here
+    // Mock successful login
+    toast({
+      title: "Авторизация успешна!",
+      description: "Вы успешно вошли в систему.",
+    });
+    
+    if (onAuthSuccess) {
+      onAuthSuccess();
+    }
   };
 
   // Handle register form submission
   const onRegisterSubmit = (values: RegisterFormValues) => {
     console.log('Register values:', values);
-    // Handle registration logic here
+    // Mock successful registration
+    toast({
+      title: "Регистрация успешна!",
+      description: "Аккаунт успешно создан.",
+    });
+    
+    if (onAuthSuccess) {
+      onAuthSuccess();
+    }
+  };
+  
+  // Mock social auth
+  const handleSocialAuth = (provider: string) => {
+    console.log(`Auth with ${provider}`);
+    toast({
+      title: `Вход через ${provider}`,
+      description: "Вы успешно вошли в систему.",
+    });
+    
+    if (onAuthSuccess) {
+      onAuthSuccess();
+    }
   };
 
   return (
@@ -172,6 +205,7 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
                       type="button" 
                       variant="outline" 
                       className="border-ajackal-purple/30 hover:bg-ajackal-purple/10"
+                      onClick={() => handleSocialAuth('почту')}
                     >
                       <Mail className="mr-2 h-4 w-4" />
                       Войти с помощью почты
@@ -180,6 +214,7 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
                       type="button" 
                       variant="outline" 
                       className="border-ajackal-purple/30 hover:bg-ajackal-purple/10"
+                      onClick={() => handleSocialAuth('Telegram')}
                     >
                       <BrandTelegram className="mr-2 h-4 w-4" />
                       Войти с помощью Telegram
@@ -276,6 +311,7 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
                       type="button" 
                       variant="outline" 
                       className="border-ajackal-purple/30 hover:bg-ajackal-purple/10"
+                      onClick={() => handleSocialAuth('почту')}
                     >
                       <Mail className="mr-2 h-4 w-4" />
                       Войти с помощью почты
@@ -284,6 +320,7 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
                       type="button" 
                       variant="outline" 
                       className="border-ajackal-purple/30 hover:bg-ajackal-purple/10"
+                      onClick={() => handleSocialAuth('Telegram')}
                     >
                       <BrandTelegram className="mr-2 h-4 w-4" />
                       Войти с помощью Telegram
