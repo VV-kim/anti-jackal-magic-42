@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn } from 'lucide-react';
+import AuthDialog from './AuthDialog';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
 
   // Handle scroll event to style header on scroll
   useEffect(() => {
@@ -57,6 +59,14 @@ const Header = () => {
           <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300">
             <a href="#try">Попробовать бесплатно</a>
           </Button>
+          <Button 
+            variant="outline" 
+            className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20"
+            onClick={() => setIsAuthDialogOpen(true)}
+          >
+            <LogIn size={18} className="mr-2" />
+            Войти
+          </Button>
         </nav>
         
         {/* Mobile menu button */}
@@ -103,9 +113,26 @@ const Header = () => {
             <Button className="bg-ajackal-gradient hover:bg-ajackal-dark-gradient transition-all duration-300 w-full mt-2">
               <a href="#try">Попробовать бесплатно</a>
             </Button>
+            <Button 
+              variant="outline" 
+              className="border-ajackal-purple/60 text-ajackal-white hover:bg-ajackal-purple/20 w-full"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsAuthDialogOpen(true);
+              }}
+            >
+              <LogIn size={18} className="mr-2" />
+              Войти
+            </Button>
           </div>
         </div>
       )}
+
+      {/* Auth Dialog */}
+      <AuthDialog 
+        isOpen={isAuthDialogOpen} 
+        onClose={() => setIsAuthDialogOpen(false)} 
+      />
     </header>
   );
 };
